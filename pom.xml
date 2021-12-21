@@ -33,9 +33,9 @@
 				<configuration>
 					<cloudHubDeployment>
 						<muleVersion>4.4.0</muleVersion>
-						<username>jiyas0703</username>
-						<password>Munnar@143</password>
-						<applicationName>int-bms-exp-api-v1</applicationName>
+						<username>ankit-k-singh</username>
+						<password>Pratima@02</password>
+						<applicationName>int-bms-exp-api-v2</applicationName>
 						<environment>Sandbox</environment>
 						<workers>1</workers>
 						<workerType>Micro</workerType>
