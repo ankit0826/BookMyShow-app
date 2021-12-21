@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:book="http://www.example.org/BookMyTicketsService/">
+  <soapenv:Body>
+    <book:BookMyTickets>
+      <MovieID>1</MovieID>
+      <Seats>s1,s2,s3</Seats>
+      <NoOfSeats>3</NoOfSeats>
+      <HallNm>Dhanya</HallNm>
+      <Type>Gold</Type>
+      <Screen>Screen1</Screen>
+      <Customer>1</Customer>
+    </book:BookMyTickets>
+  </soapenv:Body>
+</soapenv:Envelope>

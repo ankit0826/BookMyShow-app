@@ -1,0 +1,34 @@
+{
+    "movies": [
+        {
+            "country": "USA",
+            "Director": "Mike Nichols",
+            "imdbID": "tt0061722",
+            "imdbVotes": "183",
+            "Language": "English",
+            "Writers": "Calder Willingham (screenplay),Buck Henry (screenplay),Charles Webb (based on the novel by)",
+            "Title": "The Graduate",
+            "imdbRating": "8.1",
+            "Rated": "Approved",
+            "Actors": "Anne Bancroft,Dustin Hoffman,William Daniels",
+            "Awards": "Won 1 Oscar. Another 22 wins & 13 nominations",
+            "Genre": "comedy ,drama, romance",
+            "Released": "22-Dec-2021"
+        },
+        {
+            "country": "USA",
+            "Director": "Stephen Sommers",
+            "imdbID": "tt064512",
+            "imdbVotes": "500",
+            "Language": "English",
+            "Writers": "Brendan Fraser,Rachel Weisz,John Hannah,Arnold Vosloo",
+            "Title": "The Mummy",
+            "imdbRating": "9.0",
+            "Rated": "Approved",
+            "Actors": "Anne Bancroft,Dustin Hoffman,William Daniels",
+            "Awards": null,
+            "Genre": "Action,Thriller,Horror",
+            "Released": "18-Dec-2021"
+        }
+    ]
+}

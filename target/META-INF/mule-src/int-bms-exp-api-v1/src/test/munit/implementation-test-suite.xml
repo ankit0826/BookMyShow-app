@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="implementation-test-suite.xml" />
+	<munit:test name="implementation-test-suite-listMoviesTest" doc:id="bfea3645-1f5b-4bd7-9ae4-80162a27b8ce" description="Test">
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to listMovies" doc:id="05f2b04a-47a4-4f33-8ae7-40f396ef7aef" name="listMovies"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="4fffb22b-e869-43b5-9f91-2dd0c1ec4496" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="implementation-test-suite-insertMoviesTest" doc:id="e2c02af9-5607-4e43-920a-aa188dd47ecb" description="Test">
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to insertMovies" doc:id="fa3fb64f-8a8a-4e9a-b866-3cf3e1c786b9" name="insertMovies"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="c60c179a-1b66-4b70-8915-d929aac51666" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>a83ba5ae-fc68-4e15-b7d2-9eec8be7f548</groupId>
+  <artifactId>bms-restful-api</artifactId>
+  <version>1.0.0</version>
+  <name>BMS RESTFul API</name>
+  <properties>
+    <classifier>raml</classifier>
+    <main>bms-restful-api.raml</main>
+    <originalFormatVersion>1.0</originalFormatVersion>
+    <apiVersion>v1</apiVersion>
+    <projectId>5ebc2558-3d74-4afd-88d5-b0c0a8ea2d11</projectId>
+    <branchId>master</branchId>
+    <commitId>3ddaf4b916101674d137963676299aad7b5d83e6</commitId>
+    <keywords/>
+    <type>rest-api</type>
+    <mainFile>bms-restful-api.raml</mainFile>
+  </properties>
+  <repositories>
+    <repository>
+      <id>anypoint-exchange</id>
+      <url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
+    </repository>
+  </repositories>
+</project>

@@ -1,0 +1,11 @@
+{
+	"MovieID":1,
+	"Seats":"s1,s2,s3",
+	"NoOfSeats":3,
+	"HallNm":"Dhanya",
+	"Type":"Gold",
+	"Screen":"Screen1",
+	"Price":500,
+	"Customer" : 1
+}
+  

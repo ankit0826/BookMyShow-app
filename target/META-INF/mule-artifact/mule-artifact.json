@@ -1,0 +1,38 @@
+{
+  "configs": [
+    "implementation.xml",
+    "interface.xml",
+    "global.xml"
+  ],
+  "secureProperties": [],
+  "redeploymentEnabled": true,
+  "name": "com.mycompany:int-bms-exp-api-v1:1.0.0-SNAPSHOT",
+  "minMuleVersion": "4.4.0",
+  "requiredProduct": "MULE_EE",
+  "classLoaderModelLoaderDescriptor": {
+    "id": "mule",
+    "attributes": {
+      "exportedPackages": [],
+      "exportedResources": [
+        "application-types.xml",
+        "config.yaml",
+        "examples/InputOrders.json",
+        "examples/input_MoviesExample.json",
+        "examples/Order.xml",
+        "examples/Orders-1.json",
+        "examples/Orders.json",
+        "examples/output_MoviesExample.json",
+        "examples/output_PlaceOrder.xml",
+        "global.xml",
+        "implementation-test-suite.xml",
+        "implementation.xml",
+        "interface.xml",
+        "log4j2.xml"
+      ]
+    }
+  },
+  "bundleDescriptorLoader": {
+    "id": "mule",
+    "attributes": {}
+  }
+}

@@ -1,0 +1,6 @@
+url:
+  host: "int-bms-sys-api-v2.us-e2.cloudhub.io"
+  port: "80"
+  
+http:
+  port: "8081"

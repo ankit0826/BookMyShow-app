@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="cfc70dc8-05d1-4073-9af4-f29771132cbd" >
+		<http:listener-connection host="0.0.0.0" port="${http.port}" />
+	</http:listener-config>
+	<configuration-properties doc:name="Configuration properties" doc:id="14f3d282-c59b-4341-bdca-c0c0e75ca467" file="config.yaml" />
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="f578a4de-b0db-4c14-bcb8-d49ab484ea34" >
+		<http:request-connection host="${url.host}" port="${url.port}" />
+	</http:request-config>
+	<wsc:config name="Web_Service_Consumer_Config" doc:name="Web Service Consumer Config" doc:id="7ada060b-532f-4c5d-a373-887137b769b7" >
+		<wsc:connection wsdlLocation="http://int-bms-sys-api-v2.us-e2.cloudhub.io/OrderManagement/OrderManagementSOAP?wsdl" service="OrderManagement" port="OrderManagementSOAP" address="http://int-bms-sys-api-v2.us-e2.cloudhub.io/OrderManagement/OrderManagementSOAP" />
+	</wsc:config>
+	<configuration doc:name="Configuration" doc:id="3f3d3b6d-0a25-4ef3-a023-c9877b46a284" defaultErrorHandler-ref="globalError_Handler" />
+	<error-handler name="globalError_Handler" doc:id="fae75edc-267c-468d-be58-28ebf05a11c5" >
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="b91393d1-e434-4640-a809-6bc189867f52" >
+			<ee:transform doc:name="Transform Message" doc:id="76c75d74-b900-4215-b51f-12c140f8066d" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{message:"Error occured"}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+		</on-error-propagate>
+	</error-handler>
+</mule>

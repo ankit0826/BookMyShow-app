@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<mule xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit-soap="http://www.mulesoft.org/schema/mule/apikit-soap" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/apikit-soap http://www.mulesoft.org/schema/mule/apikit-soap/current/mule-apikit-soap.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
+    <flow name="placeOrder" doc:id="69974b21-1e65-476b-8abd-9e936bedd667">
+		<ee:transform doc:name="Transform Message" doc:id="b0a8c881-4248-41e3-856c-f7dafe9f09b3" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+ns ns0 http://www.example.org/OrderManagement/
+fun totalPrice(NoOfSeats:Number,Type:String )= do
+{
+	var price =
+	if ( Type  == "Gold" ) 400 * NoOfSeats
+	else if ( Type  == "Silver" ) 300 * NoOfSeats
+	else
+		200 * NoOfSeats
+	var totalPrice =
+	if ( NoOfSeats  > 3 ) price - 15/100 * price
+	else
+		price
+	---
+	totalPrice
+}
+---
+{
+	ns0#PostOrder: {
+		MovieID: payload.MovieID,
+		Seats: payload.Seats,
+		NoOfSeats: payload.NoOfSeats,
+		HallNm: payload.HallNm,
+		Type: payload.Type,
+		Screen: payload.Screen,
+		Customer: payload.Customer,
+		Price: totalPrice(payload.NoOfSeats as Number,payload.Type as String)
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<wsc:consume operation="PostOrder" doc:id="ef8a10f3-42cd-423e-a6dc-77cd00ccca1f" config-ref="Web_Service_Consumer_Config"/>
+		<ee:transform doc:name="Transform Message" doc:id="8a003f66-19b0-4121-a3ea-3c8bab6631fe" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+---
+{
+	Ticket: {
+		status: payload.body.Ticket.status default "",
+		Price: payload.body.Ticket.Price default 0,
+		Screen: payload.body.Ticket.Screen default "",
+		Seats: payload.body.Ticket.Seats default "",
+		OrderID: payload.body.Ticket.OrderID default ""
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+    </flow>
+	<flow name="listOrders" doc:id="b1e4bd59-4541-49ca-a246-ddc6ef10dbd7">
+		<ee:transform doc:name="Transform Message" doc:id="d7d05102-6d4d-478c-b039-66da1b387a7d" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+ns ns0 http://www.example.org/OrderManagement/
+---
+{
+	ns0#GetOrder: {
+		Customer: attributes.uriParams.cid as Number
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<wsc:consume operation="GetOrder" doc:name="Consume" doc:id="1ffd2c5e-25cc-45ab-a006-f7b23dfb83d4" config-ref="Web_Service_Consumer_Config"/>
+		<ee:transform doc:name="Transform Message" doc:id="b6fe37b9-ff08-4c66-ae43-25f733e2a937" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload.body.Orders.*index]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="listMovies" doc:id="711ce0ed-91a2-4779-b891-9227e0d32857" >
+		<set-variable value='#[{&#10;	"Genere" : attributes.queryParams.Genere default "",&#10;	"Language" : attributes.queryParams.Language default "",&#10;	"Released" :attributes.queryParams.Released default ""&#10;}]' doc:name="queryPrm" doc:id="a856a4a1-6690-462d-aeff-ffa3c08b6b54" variableName="queryPrm" />
+		<http:request method="GET" doc:name="Request" doc:id="8d411252-b167-4c76-b367-88f48b4aa57c" config-ref="HTTP_Request_configuration" path="/movies"/>
+		<ee:transform doc:name="Transform Message" doc:id="cd00803a-7959-48aa-af79-d3e463b1c335" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+---
+{
+	movies: payload.movies map ( movie , indexOfMovie ) -> {
+		country: movie.country,
+		Director: movie.Director,
+		imdbID: movie.imdbID,
+		imdbVotes: movie.imdbVotes,
+		Language: movie.Language,
+		Writers: movie.Writers,
+		Title: movie.Title,
+		imdbRating: movie.imdbRating,
+		Rated: movie.Rated,
+		Actors: movie.Actors,
+		Awards: movie.Awards,
+		Genere: movie.Genre,
+		Released: movie.Released
+	}
+}
+
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="89d837fa-9480-4384-9b14-188dd5b54f6c" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+---
+payload.movies filter
+(
+	(value,index)->
+	(value.Genere contains vars.queryPrm.Genere) and 
+	(value.Language contains vars.queryPrm.Language)
+	and (value.Released contains vars.queryPrm.Released)
+	
+)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="listMovie" doc:id="7c05cff3-22dc-4e86-8aa5-f1a669e7c9c0" >
+		<http:request method="GET" doc:name="getMovie" doc:id="3308e9aa-b3a7-40bc-9a31-33cde7093b7e" config-ref="HTTP_Request_configuration" path="/movies/{movie_id}" >
+			<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	movie_id : attributes.uriParams.movie_id
+}]]]></http:uri-params>
+		</http:request>
+		<ee:transform doc:name="Transform Message" doc:id="a4a03ae0-1630-4589-9faa-4337f0518fc0" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+---
+{
+	movies: payload.movies map ( movie , indexOfMovie ) -> {
+		country: movie.country,
+		Director: movie.Director,
+		imdbID: movie.imdbID,
+		imdbVotes: movie.imdbVotes,
+		Language: movie.Language,
+		Writers: movie.Writers,
+		Title: movie.Title,
+		imdbRating: movie.imdbRating,
+		Rated: movie.Rated,
+		Actors: movie.Actors,
+		Awards: movie.Awards,
+		Genere: movie.Genre,
+		Released: movie.Released
+	}
+}
+
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="deleteMovie" doc:id="24c3b870-5efd-4c46-8507-942e24677d05" >
+		<http:request method="DELETE" doc:name="Request" doc:id="55564cc2-8bc5-4b1d-9c38-d8e8ddfec756" config-ref="HTTP_Request_configuration" path='#["/movie/" ++ attributes.uriParams.movie_id as String]'/>
+		<ee:transform doc:name="Transform Message" doc:id="0cf99439-c84a-492b-ae67-931553ebd021" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"movie" : "deleted"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="insertMovies" doc:id="1d73f4d1-e493-44e1-865b-f4a46867302c" >
+		<http:request method="POST" doc:name="Request" doc:id="435b6015-b9a0-484f-bc26-5067cdca8cad" config-ref="HTTP_Request_configuration" path="/movies"/>
+	</flow>
+	<flow name="updateMovie" doc:id="945a9a0c-7f30-4604-bbc6-60cf0b9be541" >
+		<http:request method="POST" doc:name="Request" doc:id="06fbbb77-46f0-49e8-984b-0b01ccdb32c2" config-ref="HTTP_Request_configuration" path="#['/movie/' ++ attributes.uriParams.movie_id as String]"/>
+	</flow>
+</mule>

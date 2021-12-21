@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="orders_json" format="json">
+      <types:shape format="weave" example="examples/Orders-1.json"><![CDATA[%dw 2.0
+
+type orders_json = {|
+  MovieID: Number {"typeId": "int"}, 
+  Seats: String, 
+  NoOfSeats: Number {"typeId": "int"}, 
+  HallNm: String, 
+  Type: String, 
+  Screen: String, 
+  Price: Number {"typeId": "int"}, 
+  Customer: Number {"typeId": "int"}
+|} {"example": "{\\\"MovieID\\\":1,\\\"Seats\\\":\\\"s1,s2,s3\\\",\\\"NoOfSeats\\\":3,\\\"HallNm\\\":\\\"Dhanya\\\",\\\"Type\\\":\\\"Gold\\\",\\\"Screen\\\":\\\"Screen1\\\",\\\"Price\\\":500,\\\"Customer\\\":1}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="inputorder_json" format="json">
+      <types:shape format="weave" example="examples/InputOrders.json"><![CDATA[%dw 2.0
+
+type inputorder_json = {|
+  MovieID: Number {"typeId": "int"}, 
+  Seats: String, 
+  NoOfSeats: Number {"typeId": "int"}, 
+  HallNm: String, 
+  Type: String, 
+  Screen: String, 
+  Customer: Number {"typeId": "int"}
+|} {"example": "{\\\"MovieID\\\":1,\\\"Seats\\\":\\\"s1,s2,s3\\\",\\\"NoOfSeats\\\":3,\\\"HallNm\\\":\\\"Dhanya\\\",\\\"Type\\\":\\\"Gold\\\",\\\"Screen\\\":\\\"Screen1\\\",\\\"Customer\\\":1}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="input_movies" format="json">
+      <types:shape format="weave" example="examples/input_MoviesExample.json"><![CDATA[%dw 2.0
+
+type input_movies = {|
+  movies: Array<{|    country: String,     Director: String,     imdbID: String,     imdbVotes: String,     Language: String,     Writers: String,     Title: String,     imdbRating: String,     Rated: String,     Actors: String,     Awards: String,     Genre: String,     Released: String  |}>
+|} {"example": "{\\\"movies\\\":[{\\\"country\\\":\\\"USA\\\",\\\"Director\\\":\\\"Mike Nichols\\\",\\\"imdbID\\\":\\\"tt0061722\\\",\\\"imdbVotes\\\":\\\"183\\\",\\\"Language\\\":\\\"English\\\",\\\"Writers\\\":\\\"Calder Willingham (screenplay),Buck Henry (screenplay),Charles Webb (based on the novel by)\\\",\\\"Title\\\":\\\"The Graduate\\\",\\\"imdbRating\\\":\\\"8.1\\\",\\\"Rated\\\":\\\"Approved\\\",\\\"Actors\\\":\\\"Anne Bancroft,Dustin Hoffman,William Daniels\\\",\\\"Awards\\\":\\\"Won 1 Oscar. Another 22 wins & 13 nominations\\\",\\\"Genre\\\":\\\"comedy ,drama, romance\\\",\\\"Released\\\":\\\"22-Dec-2021\\\"},{\\\"country\\\":\\\"USA\\\",\\\"Director\\\":\\\"Stephen Sommers\\\",\\\"imdbID\\\":\\\"tt064512\\\",\\\"imdbVotes\\\":\\\"500\\\",\\\"Language\\\":\\\"English\\\",\\\"Writers\\\":\\\"Brendan Fraser,Rachel Weisz,John Hannah,Arnold Vosloo\\\",\\\"Title\\\":\\\"The Mummy\\\",\\\"imdbRating\\\":\\\"9.0\\\",\\\"Rated\\\":\\\"Approved\\\",\\\"Actors\\\":\\\"Anne Bancroft,Dustin Hoffman,William Daniels\\\",\\\"Awards\\\":null,\\\"Genre\\\":\\\"Action,Thriller,Horror\\\",\\\"Released\\\":\\\"18-Dec-2021\\\"}]}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="output_movies" format="json">
+      <types:shape format="weave" example="examples/output_MoviesExample.json"><![CDATA[%dw 2.0
+
+type output_movies = {|
+  movies: Array<{|    country: String,     Director: String,     imdbID: String,     imdbVotes: String,     Language: String,     Writers: String,     Title: String,     imdbRating: String,     Rated: String,     Actors: String,     Awards: String,     Genere: String,     Released: String  |}>
+|} {"example": "{\\\"movies\\\":[{\\\"country\\\":\\\"USA\\\",\\\"Director\\\":\\\"Mike Nichols\\\",\\\"imdbID\\\":\\\"tt0061722\\\",\\\"imdbVotes\\\":\\\"183\\\",\\\"Language\\\":\\\"English\\\",\\\"Writers\\\":\\\"Calder Willingham (screenplay),Buck Henry (screenplay),Charles Webb (based on the novel by)\\\",\\\"Title\\\":\\\"The Graduate\\\",\\\"imdbRating\\\":\\\"8.1\\\",\\\"Rated\\\":\\\"Approved\\\",\\\"Actors\\\":\\\"Anne Bancroft,Dustin Hoffman,William Daniels\\\",\\\"Awards\\\":\\\"Won 1 Oscar. Another 22 wins & 13 nominations\\\",\\\"Genere\\\":\\\"comedy ,drama, romance\\\",\\\"Released\\\":\\\"22-Dec-2021\\\"},{\\\"country\\\":\\\"USA\\\",\\\"Director\\\":\\\"Stephen Sommers\\\",\\\"imdbID\\\":\\\"tt064512\\\",\\\"imdbVotes\\\":\\\"500\\\",\\\"Language\\\":\\\"English\\\",\\\"Writers\\\":\\\"Brendan Fraser,Rachel Weisz,John Hannah,Arnold Vosloo\\\",\\\"Title\\\":\\\"The Mummy\\\",\\\"imdbRating\\\":\\\"9.0\\\",\\\"Rated\\\":\\\"Approved\\\",\\\"Actors\\\":\\\"Anne Bancroft,Dustin Hoffman,William Daniels\\\",\\\"Awards\\\":null,\\\"Genere\\\":\\\"Action,Thriller,Horror\\\",\\\"Released\\\":\\\"18-Dec-2021\\\"}]}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="output_PlaceOrder" format="xml">
+      <types:example format="xml" element="{http://www.example.org/BookMyTicketsService/}BookMyTickets" location="examples/output_PlaceOrder.xml"/>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#733af893-500e-48cd-b508-3db9dd3b3991">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="orders_json"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#5430c898-62df-434f-be82-e9e8648248d0">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="inputorder_json"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="output_PlaceOrder"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#a4a03ae0-1630-4589-9faa-4337f0518fc0">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="input_movies"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#cd00803a-7959-48aa-af79-d3e463b1c335">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="input_movies"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="output_movies"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>
